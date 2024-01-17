@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/resources :: headTags}"></div>
+		<title>Edit Pizza</title>
+	</head>
+	<body>
+		<nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+		<div class="container">
+			<h1>Pizza</h1>
+			<hr/>
+			<form 
+				id="pizza-form" 
+				th:object="${pizza}"
+				th:action="@{/pizzas/edit/{id}(id=${pizza.id})}"
+				method="post"
+			>
+			<ul>
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-danger"></li>
+			</ul>
+				<div class="row">
+					<div class="col-8">
+						<div class="row gy-2">
+							<div class="col-12">
+								<label class="form-label" for="name">Name</label>
+								<input type="text" class="form-control" id="name" th:field="*{name}" th:errorClass="is-invalid">
+								<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+									<ul>
+										<li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label" for="price">Price</label>
+								<input type="number" class="form-control" id="price" th:field="*{price}" th:errorClass="is-invalid">
+								<div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+									<ul>
+										<li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label" for="image">Image</label>
+								<input type="text" class="form-control" id="image" th:field="*{image}" th:errorClass="is-invalid">
+								<img th:src="${pizza.image}" width="100" height="100">
+								<div th:if="${#fields.hasErrors('image')}" class="invalid-feedback">
+									<ul>
+										<li th:each="err : ${#fields.errors('image')}" th:text="${err}"></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label" for="description">Description</label>
+								<textarea class="form-control" id="description" th:field="*{description}" rows="6"></textarea>
+							</div>
+							<div class="col-12">
+								<button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> Save</button>
+								<a class="btn btn-primary" th:href="@{/pizzas}"><i class="fas fa-times"></i> Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div th:replace="~{fragments/resources :: scripts}"></div>
+	</body>
+</html>

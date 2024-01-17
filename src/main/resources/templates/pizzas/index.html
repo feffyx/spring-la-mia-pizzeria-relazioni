@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/resources :: headTags}"></div>
+		<title>Pizzas</title>
+	</head>
+	<body>
+		<nav th:replace="~{fragments/navbar :: navbar('pizzas')}"></nav>
+		<div class="container">
+			<th:block th:if="${successMessage != null}">
+				<div th:replace="~{fragments/components :: successMessage(${successMessage})}"></div>
+			</th:block>
+			<h1>Pizzas</h1>
+			<hr/>
+			<div class="mb-3 d-flex justify-content-between">
+				<a class="btn btn-primary" th:href="@{/pizzas/create}"><i class="fas fa-plus"></i> Add Pizza</a>
+				<form th:action="@{/pizzas}" method="get">
+			        <div class="input-group">
+			        	<input name="keyword" th:value="${keyword}" class="form-control" type="search" placeholder="Search" aria-label="Search">
+			        	<button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+			     	</div>
+			     </form>
+			</div>
+			<table class="table" th:if="${list.size() > 0}">
+				<thead>
+					<tr>
+						<th>Image</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${list}">
+						<td><img th:src="${item.image}" width="100" height="100"></td>
+						<td th:text="${item.name}"></td>
+						<td th:text="${item.price}"></td>
+						
+						<td>
+							<a class="btn btn-primary" th:href="@{|/pizzas/show/${item.id}|}"><i class="fas fa-book"></i></a>
+						</td>
+						<td>
+							<a class="btn btn-primary" th:href="@{|/pizzas/edit/${item.id}|}"><i class="fas fa-edit"></i></a>
+						</td>
+						<td>
+							<form th:action="@{'/pizzas/delete/{id}'(id=${item.id})}" method="post">
+							  <button class="btn btn-primary" type="submit" id="submitButton" onclick="return confirm('Are you sure?')">
+							  	<i class="fas fa-trash-alt"></i>
+							  </button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="alert alert-primary" role="alert" th:unless="${list.size() > 0}">
+			  There are no pizzas in the database
+			</div>
+		</div>
+		<div th:replace="~{fragments/resources :: scripts}"></div>
+	</body>
+</html>
